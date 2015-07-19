@@ -14,9 +14,13 @@ import org.opendaylight.yangtools.yang.model.repo.api.SchemaSourceException;
 import org.opendaylight.yangtools.yang.model.repo.api.SourceIdentifier;
 import org.opendaylight.yangtools.yang.model.repo.api.YangTextSchemaSource;
 import org.opendaylight.yangtools.yang.parser.repo.SharedSchemaRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/")
 public class YanglibService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(YanglibService.class);
 
     private static YanglibService INSTANCE = new YanglibService();
 
@@ -30,11 +34,12 @@ public class YanglibService {
     @Path("/schemas/{modelName}{p:/?}{revision:([0-9\\-]*)}")
     public String getSchema(@PathParam("modelName") String name, @PathParam("revision") String revision) {
         Preconditions.checkState(repo != null);
+        LOG.debug("Attempting load for schema source {}:{}", name, revision);
         final SourceIdentifier id = new SourceIdentifier(name, Optional.fromNullable(revision.equals("") ? null : revision));
         final CheckedFuture<YangTextSchemaSource, SchemaSourceException> schemaSource = repo.getSchemaSource(id, YangTextSchemaSource.class);
         try {
             final YangTextSchemaSource yangTextSchemaSource = schemaSource.checkedGet(1, TimeUnit.MINUTES);
-//            return "YANG schema";
+            LOG.info("Schema source {}:{} loaded successfully", name, revision);
             return new String(ByteStreams.toByteArray(yangTextSchemaSource.openStream()));
         } catch (TimeoutException e) {
             throw new IllegalStateException("Unable to get schema in time " + id, e);

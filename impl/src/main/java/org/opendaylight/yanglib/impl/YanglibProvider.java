@@ -71,7 +71,7 @@ public class YanglibProvider implements BindingAwareProvider, AutoCloseable, Sch
 
     @Override
     public void schemaSourceEncountered(final SchemaSourceRepresentation schemaSourceRepresentation) {
-        System.err.println("encounter");
+        LOG.debug("Source {} encountered", schemaSourceRepresentation.getIdentifier());
         // TODO now we might be able to provide additional information to the modules list
     }
 
@@ -104,7 +104,6 @@ public class YanglibProvider implements BindingAwareProvider, AutoCloseable, Sch
 
         final WriteTransaction writeTransaction = dataBroker.newWriteOnlyTransaction();
 
-
         writeTransaction.merge(LogicalDatastoreType.CONFIGURATION, InstanceIdentifier.create(Modules.class),
                 new ModulesBuilder().setModuleSetId(getCurrentId()).setModule(newModules).build());
 
@@ -122,7 +121,13 @@ public class YanglibProvider implements BindingAwareProvider, AutoCloseable, Sch
 
     @Override
     public void schemaSourceUnregistered(final PotentialSchemaSource<?> potentialSchemaSource) {
-        System.err.println("unreg");
+        LOG.debug("Source {} unregistered", potentialSchemaSource.getSourceIdentifier());
         // FIXME impl
     }
+
+    // TODO add a listener to modules subtree in order to update the timestamp
+
+    // TODO allow submitting of new sources into the cache using an RPC or something
+
+    // TODO consider putting all remote sources added by users into the repository/schema .. but would we change the url then ?
 }
