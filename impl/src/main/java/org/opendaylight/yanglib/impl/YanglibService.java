@@ -27,7 +27,7 @@ public class YanglibService {
     }
 
     @GET
-    @Path("/schemas/{modelName}/{revision : (/revision)?}")
+    @Path("/schemas/{modelName}{p:/?}{revision:([0-9\\-]*)}")
     public String getSchema(@PathParam("modelName") String name, @PathParam("revision") String revision) {
         Preconditions.checkState(repo != null);
         final SourceIdentifier id = new SourceIdentifier(name, Optional.fromNullable(revision.equals("") ? null : revision));

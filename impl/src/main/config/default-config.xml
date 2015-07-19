@@ -23,7 +23,7 @@ and is available at http://www.eclipse.org/legal/epl-v10.html
             <type xmlns:binding="urn:opendaylight:params:xml:ns:yang:controller:md:sal:binding">binding:binding-broker-osgi-registry</type>
             <name>binding-osgi-broker</name>
           </broker>
-          <cache-folder xmlns="urn:opendaylight:params:xml:ns:yang:yanglib:impl">/home/mmarsale/xrvr-not-schemas</cache-folder>
+          <cache-folder xmlns="urn:opendaylight:params:xml:ns:yang:yanglib:impl">/home/mmarsale/odl-schemas</cache-folder>
           <binding-addr xmlns="urn:opendaylight:params:xml:ns:yang:yanglib:impl">localhost</binding-addr>
           <binding-port xmlns="urn:opendaylight:params:xml:ns:yang:yanglib:impl">8181</binding-port>
         </module>
